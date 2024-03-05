@@ -27,8 +27,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $items = Item::all();
-        return view('items.create', ['items' => $items]);
+        $boxes = Box::all();
+        return view('items.create', ['boxes' => $boxes]);
     }
 
     /**

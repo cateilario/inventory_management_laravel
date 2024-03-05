@@ -2,8 +2,8 @@
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <form method="POST" action="{{ route('items.index') }}">
             @csrf
-            <textarea name="message" placeholder="{{ __('¿Buscar item?') }}"
-                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('name') }}
+            <textarea name="message" placeholder="{{ __('Nombre del item a buscar...') }}"
+                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
             </textarea>
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
             <x-primary-button class="mt-4">{{ __('Buscar') }}</x-primary-button>
@@ -29,6 +29,7 @@
                             </div>
                             <x-dropdown>
                                 <x-slot name="trigger">
+                                    <button>Prestar</button>
                                     <button>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400"
                                             viewBox="0 0 20 20" fill="currentColor">
