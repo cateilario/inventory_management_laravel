@@ -9,6 +9,11 @@ class Box extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'label',
+        'location',
+    ];
+
     public function item()
     {
         return $this->hasMany(Item::class);

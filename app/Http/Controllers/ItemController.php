@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Box;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use App\Models\Loan;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ItemController extends Controller
 {
@@ -33,22 +34,24 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required|max:255',
             'price' => 'required|numeric',
             'picture' => 'image|nullable',
-            'box_id' => 'required|numeric'
+            'box_id' => 'required|exists:boxes,id'
         ]);
 
         if ($request->hasFile('picture')) {
             $path = $request->file('picture')->store('public/photos');
             $validated['picture'] = $path;
+        } else {
+            $validated['picture'] = null;
         }
 
-        $request->user()->items()->create($validated);
+        Item::create($validated);
 
         return redirect(route('items.index'));
     }
@@ -58,30 +61,44 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('items.show', ['item' => $item]);
+        return view('items.show', [
+            'item' => $item,
+            'loans' => Loan::all()
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
+    public function edit(String $id)
     {
-        return view('items.edit', ['item' => $item]);
+        return view('items.edit', [
+            'item' => Item::find($id),
+            'boxes' => Box::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(Request $request, String $id)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'picture' => 'image|nullable',
-            'box_id' => 'required|numeric'
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'box_id' => 'required|exists:boxes,id'
         ]);
 
+        if ($request->hasFile('picture')) {
+            $path = $request->file('picture')->store('public/photos');
+            $validated['picture'] = $path;
+        } else {
+            $validated['picture'] = null;
+        }
+
+        $item = Item::find($id);
         $item->update($validated);
 
         return redirect(route('items.index'));

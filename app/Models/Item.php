@@ -9,9 +9,17 @@ class Item extends Model
 {
     use HasFactory;
 
-    public function loan()
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'picture',
+        'box_id',
+    ];
+
+    public function loans()
     {
-        return $this->belongsTo(Loan::class);
+        return $this->hasMany(Loan::class);
     }
 
     public function box()
@@ -21,6 +29,6 @@ class Item extends Model
 
     public function activeLoan()
     {
-        return $this->whereNull('returned_date')->first();
+        return $this->loans()->whereNull('returned_date')->first();
     }
 }

@@ -3,43 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Box;
-use App\Http\Requests\StoreBoxRequest;
-use App\Http\Requests\UpdateBoxRequest;
+use App\Models\Item;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BoxController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         // Recuperar todos los vehículos de la base de datos
+        $items = Item::all();
         $boxes = Box::all();
 
-        // Pasar la lista de vehículos a la vista
-        return view('boxes.index', ['boxes' => $boxes]);
+        return view('boxes.index', [
+            'boxes' => $items,
+            'items' => $boxes,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        $boxes = Box::all();
-        return view('boxes.create', ['boxes' => $boxes]);
+        return view('boxes.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBoxRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'label' => 'required|max:255',
-            'location' => 'required|max:255'
+            'label' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
         ]);
 
-        $request->user()->boxes()->create($validated);
+        Box::create($validated);
 
         return redirect(route('boxes.index'));
     }
@@ -47,39 +50,60 @@ class BoxController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Box $box)
+    public function show(Box $box): View
     {
-        return view('boxes.show', ['box' => $box]);
+        return view('boxes.show', [
+            'box' => $box,
+            'items' => $box->items,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Box $box)
+    public function edit(String $id)
     {
-        return view('boxes.edit', ['box' => $box]);
+        //Devuelve a la vista edit con el id del box
+        return view('boxes.edit', [
+            'box' => Box::find($id),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBoxRequest $request, Box $box)
+    public function update(String $id)
     {
-        $validated = $request->validate([
+        $validated = request()->validate([
             'label' => 'required|string|max:255',
             'location' => 'required|string|max:255',
         ]);
 
+        $box = Box::find($id);
         $box->update($validated);
 
         return redirect(route('boxes.index'));
     }
 
     /**
+     * Update the box_id for the specified item.
+     */
+    public function updateItemBox(Item $item, Request $request)
+    {
+        $request->validate([
+            'box_id' => 'nullable|exists:boxes,id',
+        ]);
+
+        $item->update(['box_id' => $request->input('box_id')]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Box $box)
+    public function destroy(String $id)
     {
+        $box = Box::find($id);
+
         $box->delete();
 
         return redirect(route('boxes.index'));
