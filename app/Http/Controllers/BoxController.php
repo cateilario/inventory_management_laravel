@@ -13,7 +13,11 @@ class BoxController extends Controller
      */
     public function index()
     {
-        return view('boxes.index', ['boxes' => Box::with('user')->latest()->get()]);
+        // Recuperar todos los vehículos de la base de datos
+        $boxes = Box::all();
+
+        // Pasar la lista de vehículos a la vista
+        return view('boxes.index', ['boxes' => $boxes]);
     }
 
     /**
@@ -21,7 +25,8 @@ class BoxController extends Controller
      */
     public function create()
     {
-        return view('box.create');
+        $boxes = Box::all();
+        return view('boxes.create', ['boxes' => $boxes]);
     }
 
     /**
@@ -30,8 +35,8 @@ class BoxController extends Controller
     public function store(StoreBoxRequest $request)
     {
         $validated = $request->validate([
-            'label' => 'required|string|max:255',
-            'location' => 'required|string|max:255'
+            'label' => 'required|max:255',
+            'location' => 'required|max:255'
         ]);
 
         $request->user()->boxes()->create($validated);
@@ -52,8 +57,6 @@ class BoxController extends Controller
      */
     public function edit(Box $box)
     {
-        $this->authorize('update', $box);
-
         return view('boxes.edit', ['box' => $box]);
     }
 
@@ -62,8 +65,6 @@ class BoxController extends Controller
      */
     public function update(UpdateBoxRequest $request, Box $box)
     {
-        $this->authorize('update', $box);
-
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -79,8 +80,6 @@ class BoxController extends Controller
      */
     public function destroy(Box $box)
     {
-        $this->authorize('delete', $box);
-
         $box->delete();
 
         return redirect(route('boxes.index'));

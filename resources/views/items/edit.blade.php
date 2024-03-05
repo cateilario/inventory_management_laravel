@@ -14,6 +14,11 @@
 
             <label for="price">Precio:</label>
             <input type="number" name="price" placeholder="{{ $item->price }}" required>
+            {{-- <label for="box_id">Caja: </label>
+            <select name="box_id" id="box_id">
+                @foreach ($boxes as $box)
+                    <option value="{{ $box->id }}">{{ $box->label }}</option>
+                @endforeach --}}
             <label for="picture">Imagen:</label>
             <input type="file" name="picture" accept="picture/*" required>
 

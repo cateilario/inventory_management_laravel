@@ -18,4 +18,9 @@ class Item extends Model
     {
         return $this->belongsTo(Box::class);
     }
+
+    public function activeLoan()
+    {
+        return $this->whereNull('returned_date')->first();
+    }
 }

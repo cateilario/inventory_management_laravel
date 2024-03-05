@@ -26,8 +26,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $boxes = Box::all();
-        return view('items.create', ['boxes' => $boxes]);
+        $items = Item::all();
+        return view('items.create', ['items' => $items]);
     }
 
     /**
@@ -84,7 +84,7 @@ class ItemController extends Controller
 
         $item->update($validated);
 
-        return redirect(route('item.index'));
+        return redirect(route('items.index'));
     }
 
     /**
@@ -92,8 +92,6 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        $this->authorize('delete', $item);
-
         $item->delete();
 
         return redirect(route('items.index'));

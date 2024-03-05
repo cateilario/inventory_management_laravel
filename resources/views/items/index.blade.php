@@ -44,6 +44,9 @@
                                     <x-dropdown-link :href="route('items.edit', $item)">
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
+                                    {{-- <x-dropdown-link :href="route('loans.create', $item)">
+                                        {{ __('Prestar') }}
+                                    </x-dropdown-link> --}}
                                     <form method="POST" action="{{ route('items.destroy', $item) }}">
                                         @csrf
                                         @method('delete')
@@ -55,33 +58,6 @@
 
                                 </x-slot>
                             </x-dropdown>
-
-                            {{-- Opción prestar item --}}
-                            {{-- @if (!$item->user->is(auth()->user()))
-                                @if (auth()->user()->following->contains($tuit->user->id))
-                                    <!-- Unfollow form -->
-                                    <form method="POST" action="{{ route('follow.destroy', $tuit->user) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-dropdown-link :href="route('follow.destroy', $tuit->user)"
-                                            onclick="event.preventDefault(); this.closest('form').submit();">
-                                            {{ __('Unfollow') }}
-                                        </x-dropdown-link>
-                                    </form>
-                                @else
-                                    <!-- Follow form -->
-                                    <form method="POST" action="{{ route('follow.store') }}">
-                                        @csrf
-                                        <input type="hidden" name="user_id" value="{{ $tuit->user->id }}">
-                                        <x-dropdown-link :href="route('follow.store')"
-                                            onclick="event.preventDefault(); this.closest('form').submit();">
-                                            {{ __('Follow') }}
-                                        </x-dropdown-link>
-                                    </form>
-                                @endif
-                            @endif --}}
-                            {{-- fin edit --}}
-
                         </div>
                     </div>
                 </div>
