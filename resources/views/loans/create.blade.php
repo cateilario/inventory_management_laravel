@@ -15,15 +15,22 @@
                             <div>
                                 <label for="item_id">Item:</label>
                                 <select name="item_id" id="item_id">
+                                    <option value="">Selecciona un item: </option>
                                     @foreach ($items as $item)
-                                        <option value="{{ $items->id }}">{{ $items->name }}</option>
+                                        @if (!$item->activeLoan())
+                                            <option value="{{ $item->id }}"
+                                                {{ old('item_id', isset($selectedItem) ? $selectedItem : '') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
 
                             <div>
-                                <label for="location">Fecha devolución:</label>
-                                <input type="date" name="due_date" id="due_date" required>
+                                <label for="due_date">Fecha devolución:</label>
+                                <input type="date" name="due_date" id="due_date"
+                                    value="{{ date('Y-m-d', strtotime('+2 weeks')) }}">
                             </div>
 
                             <div>

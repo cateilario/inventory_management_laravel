@@ -14,13 +14,9 @@ class BoxController extends Controller
      */
     public function index(): View
     {
-        // Recuperar todos los vehículos de la base de datos
-        $items = Item::all();
-        $boxes = Box::all();
-
         return view('boxes.index', [
-            'boxes' => $boxes,
-            'items' => $items,
+            'boxes' => Box::all(),
+            'items' => Item::all(),
         ]);
     }
 
@@ -61,25 +57,25 @@ class BoxController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $id)
+    public function edit(Box $box)
     {
-        //Devuelve a la vista edit con el id del box
         return view('boxes.edit', [
-            'box' => Box::find($id),
+            'box' => $box,
+            'items' => Item::all(),
+            'unassignedItems' => Item::whereNull('box_id')->get(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(String $id)
+    public function update(Request $request, Box $box)
     {
         $validated = request()->validate([
             'label' => 'required|string|max:255',
             'location' => 'required|string|max:255',
         ]);
 
-        $box = Box::find($id);
         $box->update($validated);
 
         return redirect(route('boxes.index'));
@@ -88,22 +84,21 @@ class BoxController extends Controller
     /**
      * Update the box_id for the specified item.
      */
-    public function updateItemBox(Item $item, Request $request)
-    {
-        $request->validate([
-            'box_id' => 'nullable|exists:boxes,id',
-        ]);
+    // public function updateItemBox(Item $item, Request $request)
+    // {
+    //     $request->validate([
+    //         'box_id' => 'nullable|exists:boxes,id',
+    //     ]);
 
-        $item->update(['box_id' => $request->input('box_id')]);
-    }
+    //     $item->update(['box_id' => $request->input('box_id')]);
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $id)
+    public function destroy(Box $box)
     {
-        $box = Box::find($id);
-
+        $box->items()->update(['box_id' => null]);
         $box->delete();
 
         return redirect(route('boxes.index'));

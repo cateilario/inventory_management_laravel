@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Box;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ItemController extends Controller
@@ -15,11 +16,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // Recuperar todos los vehículos de la base de datos
-        $items = Item::all();
-
-        // Pasar la lista de vehículos a la vista
-        return view('items.index', ['items' => $items]);
+        return view('items.index', [
+            'items' => Item::all(),
+        ]);
     }
 
     /**
@@ -27,8 +26,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $boxes = Box::all();
-        return view('items.create', ['boxes' => $boxes]);
+        return view('items.create', [
+            'boxes' => Box::all(),
+        ]);
     }
 
     /**
@@ -109,6 +109,9 @@ class ItemController extends Controller
     {
         $item->delete();
 
+        if($item->picture) {
+            Storage::delete($item->picture);
+        }
         return redirect(route('items.index'));
     }
 }
