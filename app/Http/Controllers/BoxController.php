@@ -19,8 +19,8 @@ class BoxController extends Controller
         $boxes = Box::all();
 
         return view('boxes.index', [
-            'boxes' => $items,
-            'items' => $boxes,
+            'boxes' => $boxes,
+            'items' => $items,
         ]);
     }
 

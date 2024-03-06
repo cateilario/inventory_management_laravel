@@ -19,7 +19,7 @@
                                 <td>{{ $box->label }}</td>
                             </tr>
                             <tr>
-                                <td>Detalles: </td>
+                                <td>Ubicación: </td>
                                 <td>{{ $box->location }}</td>
                             </tr>
                         </table>

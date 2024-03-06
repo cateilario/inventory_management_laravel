@@ -21,10 +21,9 @@ class LoanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(String $id)
+    public function create()
     {
-        return view('loans.store', [
-            'item_id' => Item::find($id),
+        return view('loans.create', [
             'items' => Item::all()
         ]);
     }

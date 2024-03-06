@@ -36,7 +36,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|max:255',
             'description' => 'required|max:255',
             'price' => 'required|numeric',
@@ -44,14 +44,12 @@ class ItemController extends Controller
             'box_id' => 'required|exists:boxes,id'
         ]);
 
+        $item = new Item($request->only(['name', 'description', 'price', 'box_id']));
         if ($request->hasFile('picture')) {
-            $path = $request->file('picture')->store('public/photos');
-            $validated['picture'] = $path;
-        } else {
-            $validated['picture'] = null;
+            $item->picture = $request->file('picture')->store('items_pictures', 'public');
         }
 
-        Item::create($validated);
+        $item->save();
 
         return redirect(route('items.index'));
     }

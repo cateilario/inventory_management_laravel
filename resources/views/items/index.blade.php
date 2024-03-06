@@ -29,7 +29,6 @@
                             </div>
                             <x-dropdown>
                                 <x-slot name="trigger">
-                                    <button>Prestar</button>
                                     <button>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400"
                                             viewBox="0 0 20 20" fill="currentColor">
@@ -45,9 +44,9 @@
                                     <x-dropdown-link :href="route('items.edit', $item)">
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
-                                    {{-- <x-dropdown-link :href="route('loans.create', $item)">
+                                    <x-dropdown-link :href="route('loans.create', $item)">
                                         {{ __('Prestar') }}
-                                    </x-dropdown-link> --}}
+                                    </x-dropdown-link>
                                     <form method="POST" action="{{ route('items.destroy', $item) }}">
                                         @csrf
                                         @method('delete')
