@@ -44,9 +44,7 @@ class LoanController extends Controller
     {
 
     $validated = $request->validate([
-        // 'user_id' => 'required',
         'item_id' => 'required',
-        // 'checkout_date' => 'required',
         'due_date' => 'required',
     ]);
 
@@ -65,7 +63,7 @@ class LoanController extends Controller
     {
         $loan = Loan::find($loan->id);
 
-        return view('loans.show', [
+        return view('loans.index', [
             'loans' => Loan::all(),
             'user' => $loan->user,
             'item' => $loan->item,

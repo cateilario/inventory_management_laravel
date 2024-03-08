@@ -98,7 +98,7 @@ class BoxController extends Controller
      */
     public function destroy(Box $box)
     {
-        $box->item()->update(['box_id' => null]);
+        // $box->item()->update(['box_id' => null]);
         $box->delete();
 
         return redirect(route('boxes.index'));

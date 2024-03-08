@@ -4,29 +4,30 @@
             AÑADIR ITEM
         </h2>
     </x-slot>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="w-full mx-auto p-4 sm:p-6 lg:p-8">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data"
+                            class="p-6 flex flex-col items-start justify-center gap-3">
                             @csrf
 
-                            <div>
+                            <div class="flex gap-4 items-center">
                                 <label for="name">Nombre:</label>
                                 <input type="text" name="name" id="name" required>
                             </div>
 
-                            <div>
+                            <div class="flex gap-4 items-center">
                                 <label for="description">Descripción:</label>
                                 <textarea name="description" id="description" required></textarea>
                             </div>
 
-                            <div>
+                            <div class="flex gap-4 items-center">
                                 <label for="price">Precio:</label>
                                 <input type="number" name="price" id="price" required>
                             </div>
-                            <div>
+                            <div class="flex gap-4 items-center">
                                 <label for="box_id">Caja: </label>
                                 <select name="box_id" id="box_id">
                                     @foreach ($boxes as $box)
@@ -35,7 +36,7 @@
                                 </select>
                             </div>
 
-                            <div>
+                            <div class="flex gap-4 items-center">
                                 <label for="picture">Imagen:</label>
                                 <input type="file" name="picture" id="picture">
                             </div>

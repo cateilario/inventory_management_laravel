@@ -22,9 +22,6 @@
                                     <td>{{ $box->location }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Contenido:</td>
-                                </tr>
-                                <tr>
                                     <th class="p-4">Nombre</th>
                                     <th class="p-4">Caja</th>
                                     <th class="p-4">Acciones</th>

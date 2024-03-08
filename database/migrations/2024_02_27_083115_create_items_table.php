@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('picture')->nullable();
 
             $table->unsignedBigInteger('box_id')->nullable(); // Permitir valores nulos
-            $table->foreign('box_id')->references('id')->on('boxes')->onDelete('cascade');
+            $table->foreign('box_id')->references('id')->on('boxes')->nullOnDelete(); // Si se elimina la caja, el item se queda sin caja
 
             $table->timestamps();
         });

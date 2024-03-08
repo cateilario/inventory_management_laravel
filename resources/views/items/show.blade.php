@@ -22,16 +22,12 @@
                                     <td>{{ $item->price }}</td>
                                 </tr>
                                 <tr>
-                                    {{-- <td class="text-gray-950 p-3">Caja:</td>
-                                    <td>{{ $item->box->label }}</td> --}}
-                                    <td>
-                                        @if ($item->box_id != null)
-                                            <div class=" text-gray-900 dark:text-gray-100">
-                                                Caja: {{ $item->box->label }}</div>
-                                        @else
-                                            <div class=" text-gray-900 dark:text-gray-100">Sin caja</div>
-                                        @endif
-                                    </td>
+                                    @if ($item->box_id != null)
+                                        <td class=" text-gray-900 p-3">
+                                            Caja: {{ $item->box->label }}</td>
+                                    @else
+                                        <td class=" text-gray-900 p-3">Sin caja</td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <td class="text-gray-950 p-3">
@@ -39,7 +35,6 @@
                                             class="w-[100px] h-[100px] mt-4">
                                     </td>
                                 </tr>
-
                             </table>
 
                             <form action="{{ route('items.index') }}">
@@ -49,7 +44,7 @@
                         <x-dropdown>
                             <x-slot name="trigger">
                                 <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500"
                                         viewBox="0 0 20 20" fill="currentColor">
                                         <path
                                             d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -57,9 +52,6 @@
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('items.show', $item)">
-                                    {{ __('Mostrar') }}
-                                </x-dropdown-link>
                                 <x-dropdown-link :href="route('items.edit', $item)">
                                     {{ __('Edit') }}
                                 </x-dropdown-link>
