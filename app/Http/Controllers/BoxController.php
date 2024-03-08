@@ -46,59 +46,59 @@ class BoxController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Box $box): View
+    public function show($id)
     {
-        return view('boxes.show', [
-            'box' => $box,
-            'items' => $box->items,
-        ]);
+        {
+    $box = Box::with('items')->find($id);
+
+    return view('boxes.show', ['box' => $box]);
+}
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Box $box)
+    public function edit(String $id)
     {
+        $box = Box::with('items')->find($id);
+
         return view('boxes.edit', [
             'box' => $box,
             'items' => Item::all(),
-            'unassignedItems' => Item::whereNull('box_id')->get(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Box $box)
+    public function update(String $id)
     {
         $validated = request()->validate([
             'label' => 'required|string|max:255',
             'location' => 'required|string|max:255',
         ]);
 
+        $box = Box::find($id);
         $box->update($validated);
 
         return redirect(route('boxes.index'));
     }
 
-    /**
-     * Update the box_id for the specified item.
-     */
-    // public function updateItemBox(Item $item, Request $request)
-    // {
-    //     $request->validate([
-    //         'box_id' => 'nullable|exists:boxes,id',
-    //     ]);
+    public function updateItemBox(Item $item, Request $request)
+    {
+        $request->validate([
+            'box_id' => 'nullable|exists:boxes,id',
+        ]);
 
-    //     $item->update(['box_id' => $request->input('box_id')]);
-    // }
+        $item->update(['box_id' => $request->input('box_id')]);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Box $box)
     {
-        $box->items()->update(['box_id' => null]);
+        $box->item()->update(['box_id' => null]);
         $box->delete();
 
         return redirect(route('boxes.index'));

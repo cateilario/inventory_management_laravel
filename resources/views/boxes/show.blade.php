@@ -4,55 +4,77 @@
             CAJA {{ $box->label }}
         </h2>
     </x-slot>
+    <div class="w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white p-4 shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900">
+                        <form action="{{ route('boxes.show', $box->id) }}" method="GET">
+                            @csrf
+                            @method('PUT')
+                            <table class="w-full">
+                                <tr>
+                                    <td class="text-gray-950 p-3">Etiquta: </td>
+                                    <td class="p-3">{{ $box->label }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gray-950 p-3">Ubicación: </td>
+                                    <td>{{ $box->location }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Contenido:</td>
+                                </tr>
+                                <tr>
+                                    <th class="p-4">Nombre</th>
+                                    <th class="p-4">Caja</th>
+                                    <th class="p-4">Acciones</th>
+                                </tr>
+                                @foreach ($box->items as $item)
+                                    <tr>
+                                        <td class="w-1/3">{{ $item->name }}</td>
+                                        <td class="w-1/3">{{ $box->label }}</td>
+                                        <td class="w-1/2">
+                                            <!-- Acciones para el item -->
+                                            <div
+                                                class="w-full text-sm text-gray-900 dark:text-gray-100 flex justify-around items-center gap-5">
+                                                <a href="{{ route('items.edit', $item->id) }}" title="Editar Item"
+                                                    class=" text-center rounded-lg p-3 bg-gray-900">Editar</a>
+                                                <a href="{{ route('items.show', $item->id) }}" title="Editar Item"
+                                                    class=" text-center rounded-lg p-3 bg-gray-900">Ver
+                                                    Item</a>
+                                                <form action="{{ route('items.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button title="Eliminar Item" id="delete-btn"
+                                                        class="bg-red-800 text-center rounded-lg p-3"
+                                                        type="submit">Eliminar</button>
+                                                </form>
+                                                @if ($item->activeLoan())
+                                                    <a href="{{ route('loans.show', $item->activeLoan()->id) }}"
+                                                        title="Ver Prestamo"
+                                                        class=" bg-yellow-800 text-center rounded-lg p-3">Ver
+                                                        Prestamo</a>
+                                                @else
+                                                    <a href="{{ route('loans.create', $item->id) }}"
+                                                        title="Prestar Item"
+                                                        class=" bg-gray-900 text-center rounded-lg p-3">Prestar</a>
+                                                @endif
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('boxes.show', $box->id) }}" method="GET">
-                        @csrf
-                        @method('PUT')
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                        <div class="mb-4">
-                            <label for="label" class="block text-neutral-300 text-sm font-bold mb-2">Label:</label>
-                            <p>{{ $box->label }}</p>
-                        </div>
+                                </td>
+                                </tr>
+                            </table>
 
-                        <div class="mb-4">
-                            <label for="location"
-                                class="block text-neutral-300 text-sm font-bold mb-2">Location:</label>
-                            <p>{{ $box->location }}</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            @foreach ($box->items as $item)
-                                <a href="{{ route('items.show', $item->id) }}"
-                                    class="flex items-center px-2 py-4 bg-white dark:bg-gray-700 rounded-md shadow-sm border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition duration-100 ease-in-out">
-                                    <div class="flex-shrink-0">
-                                        @if ($item->picture)
-                                            <img src="{{ asset(Storage::url($item->picture)) }}"
-                                                alt="{{ $item->name }}" class="h-10 w-10 object-cover rounded-md">
-                                        @else
-                                            <div class="h-10 w-10 bg-gray-300 dark:bg-gray-600 rounded-md"></div>
-                                        @endif
-                                    </div>
-                                    <div class="ml-4">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            {{ $item->name }}</p>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                                            @if (strlen($item->description) > 30)
-                                                {{ substr($item->description, 0, 30) . '...' }}
-                                            @else
-                                                {{ $item->description }}
-                                            @endif
-                                        </p>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    </form>
+                            <form action="{{ route('items.index') }}">
+                                <x-primary-button class="mt-4">{{ __('VOLVER A INICIO') }}</x-primary-button>
+                            </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </x-app-layout>

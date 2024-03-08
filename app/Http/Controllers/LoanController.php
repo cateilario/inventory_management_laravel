@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Models\Item;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class LoanController extends Controller
 {
@@ -24,12 +26,14 @@ class LoanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
+        $item_id = request()->input('item_id');
+
         return view('loans.create', [
             'items' => Item::all(),
             'users' => User::all(),
-            'selectedItem' => request('item_id'),
+            'item_id' => $item_id,
         ]);
     }
 
@@ -38,29 +42,34 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        $user = auth()->user()->id;
-        $validated['user_id'] = $user;
 
-        $validated= $request->validate([
-            'item_id' => 'required|exists:items,id',
-            'due_date' => 'required|date',
-        ]);
+    $validated = $request->validate([
+        // 'user_id' => 'required',
+        'item_id' => 'required',
+        // 'checkout_date' => 'required',
+        'due_date' => 'required',
+    ]);
 
-        $validated['checkout_date'] = now();
+    $validated['user_id'] = auth()->user()->id;
+    $validated['checkout_date'] = now();
 
-        Loan::create($validated);
-        return redirect()->route('loans.index');
+    Loan::create($validated);
+
+    return redirect()->route('loans.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Loan $loan)
+    public function show(Loan $loan): View
     {
+        $loan = Loan::find($loan->id);
+
         return view('loans.show', [
-            'loan' => $loan,
-            'item' => $loan->item,
+            'loans' => Loan::all(),
             'user' => $loan->user,
+            'item' => $loan->item,
+            'loan'  => $loan,
         ]);
     }
 
@@ -69,21 +78,21 @@ class LoanController extends Controller
      */
     public function edit(String $id)
     {
-        // $loan = Loan::find($id);
-        // $loan->returned_date = date('Y-m-d');
-        // $loan->save();
-        // return redirect()->route('loans.index');
+        // return view('loans.edit', [
+        //     'loan' => Loan::find($id),
+        //     'items' => Item::all(),
+        //     'item_id' => Item::find(Loan::find($id)->item_id)
+
+        // ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Loan $loan)
     {
-         $loan->update([
-            'returned_date' => now(),
-        ]);
-
+        $loan->update(['returned_date'=>now()]);
         return redirect()->route('loans.index');
     }
 

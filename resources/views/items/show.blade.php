@@ -4,36 +4,47 @@
             ITEM - {{ $item->name }}
         </h2>
     </x-slot>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="w-full mx-auto p-4 sm:p-6 lg:p-8">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-sm sm:rounded-lg">
+                <div class="bg-white p-4 shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 flex justify-between">
                         <form action="{{ route('items.show', $item->id) }}" method="GET">
                             @csrf
                             @method('PUT')
-
                             <table>
                                 <tr>
-                                    <td>Descripción: </td>
-                                    <td>{{ $item->description }}</td>
+                                    <td class="text-gray-950 p-3">Descripción: </td>
+                                    <td class="p-3">{{ $item->description }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Precio: </td>
+                                    <td class="text-gray-950 p-3">Precio: </td>
                                     <td>{{ $item->price }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Caja:</td>
-                                    <td>{{ $item->box->label }}</td>
+                                    {{-- <td class="text-gray-950 p-3">Caja:</td>
+                                    <td>{{ $item->box->label }}</td> --}}
+                                    <td>
+                                        @if ($item->box_id != null)
+                                            <div class=" text-gray-900 dark:text-gray-100">
+                                                Caja: {{ $item->box->label }}</div>
+                                        @else
+                                            <div class=" text-gray-900 dark:text-gray-100">Sin caja</div>
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td class="text-gray-950 p-3">
                                         <img src="{{ Storage::url($item->picture) }}" alt="imagen-item"
                                             class="w-[100px] h-[100px] mt-4">
                                     </td>
                                 </tr>
 
                             </table>
+
+                            <form action="{{ route('items.index') }}">
+                                <x-primary-button class="mt-4">{{ __('VOLVER A INICIO') }}</x-primary-button>
+                            </form>
                         </form>
                         <x-dropdown>
                             <x-slot name="trigger">

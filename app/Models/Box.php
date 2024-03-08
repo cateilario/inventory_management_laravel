@@ -14,7 +14,7 @@ class Box extends Model
         'location',
     ];
 
-    public function item()
+    public function items()
     {
         return $this->hasMany(Item::class);
     }

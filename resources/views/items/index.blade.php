@@ -1,19 +1,24 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <form method="POST" action="{{ route('items.index') }}">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            ITEMS
+        </h2>
+    </x-slot>
+    <div class="w-full mx-auto p-4 sm:p-6 lg:p-8">
+        {{-- Search --}}
+        <form>
             @csrf
-            <textarea name="message" placeholder="{{ __('Nombre del item a buscar...') }}"
-                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-            </textarea>
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <input type="text" name="search" id="search" placeholder="{{ __('Nombre del item a buscar...') }}"
+                class="block w-1/2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+            </input>
             <x-primary-button class="mt-4">{{ __('Buscar') }}</x-primary-button>
         </form>
-
+        {{-- Add item --}}
         <form action="{{ route('items.create') }}">
             <x-primary-button class="mt-4">{{ __('Añadir Item') }}</x-primary-button>
         </form>
 
-        <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+        <div class="w-full mt-6 bg-white p-3 shadow-sm rounded-lg divide-y">
             @foreach ($items as $item)
                 <div class="p-6 flex space-x-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 -scale-x-100" fill="none"
@@ -44,7 +49,7 @@
                                     <x-dropdown-link :href="route('items.edit', $item)">
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
-                                    <x-dropdown-link :href="route('loans.create', $item)">
+                                    <x-dropdown-link :href="route('loans.create', ['item_id' => $item->id])">
                                         {{ __('Prestar') }}
                                     </x-dropdown-link>
                                     <form method="POST" action="{{ route('items.destroy', $item) }}">

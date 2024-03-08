@@ -101,7 +101,6 @@ class ItemController extends Controller
 
         return redirect(route('items.index'));
     }
-
     /**
      * Remove the specified resource from storage.
      */
