@@ -46,6 +46,11 @@
                                     class="mt-4">{{ __('Crear item') }}</x-primary-button>
                             </div>
                         </form>
+
+                        <form action="{{ route('items.index') }}">
+                            <x-primary-button type="submit"
+                                class="mt-4">{{ __('Volver a Inicio') }}</x-primary-button>
+                        </form>
                     </div>
                 </div>
             </div>

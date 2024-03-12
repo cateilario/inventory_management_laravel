@@ -18,12 +18,10 @@
                                 <select name="item_id" id="item_id">
                                     <option value="">Selecciona un item: </option>
                                     @foreach ($items as $item)
-                                        {{-- @if (!$item->activeLoan()) --}}
                                         <option value="{{ $item->id }}"
                                             {{ old('item_id', isset($selectedItem) ? $selectedItem : '') == $item->id ? 'selected' : '' }}>
                                             {{ $item->name }}
                                         </option>
-                                        {{-- @endif --}}
                                     @endforeach
                                 </select>
                             </div>

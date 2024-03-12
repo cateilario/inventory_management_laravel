@@ -46,7 +46,7 @@ class ItemController extends Controller
 
         $item = new Item($request->only(['name', 'description', 'price', 'box_id']));
         if ($request->hasFile('picture')) {
-            $item->picture = $request->file('picture')->store('items_pictures', 'public');
+            $item->picture = $request->file('picture')->store('public/pictures');
         }
 
         $item->save();
@@ -90,7 +90,7 @@ class ItemController extends Controller
         ]);
 
         if ($request->hasFile('picture')) {
-            $path = $request->file('picture')->store('public/photos');
+            $path = $request->file('picture')->store('public/pictures');
             $validated['picture'] = $path;
         } else {
             $validated['picture'] = null;

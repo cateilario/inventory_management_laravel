@@ -38,18 +38,22 @@
                                         @endif
                                     @endforeach
                             </div>
+                            <br>
                             <div class="flex flex-col items-start justify-center">
                                 <label for="picture">Imagen</label>
                                 <input type="file" name="picture" id="picture">
-                                @if ($item->picture != null)
-                                    <img src="{{ asset(Storage::url($item->picture)) }}" alt="Portada Actual"
-                                        class="w-[100px] h-[100px] mt-2">
-                                @endif
+                                <img src="{{ Storage::url($item->picture) }}" alt="Imagen objeto"
+                                    class="w-[100px] h-[100px] mt-2">
                             </div>
 
                             <div>
                                 <x-primary-button class="mt-4">{{ __('Guardar cambios') }}</x-primary-button>
                             </div>
+                        </form>
+
+                        <form action="{{ route('items.index') }}">
+                            <x-primary-button type="submit"
+                                class="mt-4">{{ __('Volver a Inicio') }}</x-primary-button>
                         </form>
                     </div>
                 </div>

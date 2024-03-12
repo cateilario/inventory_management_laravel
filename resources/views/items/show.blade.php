@@ -32,13 +32,14 @@
                                 <tr>
                                     <td class="text-gray-950 p-3">
                                         <img src="{{ Storage::url($item->picture) }}" alt="imagen-item"
-                                            class="w-[100px] h-[100px] mt-4">
+                                            class="w-[150px] h-[150px] mt-4">
                                     </td>
                                 </tr>
                             </table>
 
                             <form action="{{ route('items.index') }}">
-                                <x-primary-button class="mt-4">{{ __('VOLVER A INICIO') }}</x-primary-button>
+                                <x-primary-button type="submit"
+                                    class="mt-4">{{ __('VOLVER A INICIO') }}</x-primary-button>
                             </form>
                         </form>
                         <x-dropdown>
@@ -66,7 +67,6 @@
                                         {{ __('Delete') }}
                                     </x-dropdown-link>
                                 </form>
-
                             </x-slot>
                         </x-dropdown>
                     </div>

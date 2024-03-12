@@ -20,16 +20,16 @@
 
         <div class="w-full mt-6 bg-white p-3 shadow-sm rounded-lg divide-y">
             @foreach ($items as $item)
-                <div class="p-6 flex justify-around items-center space-x-4 w-full">
+                <div class="p-6 flex justify-between items-center space-x-4 w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 -scale-x-100" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                     </svg>
-                    <div>
+                    <div class="w-1/3">
                         <span class="text-gray-800 w-1/3">{{ $item->name }}</span>
                     </div>
-                    <div>
+                    <div class="w-1/3">
                         <span class="text-gray-800 w-1/3">{{ $item->box ? $item->box->label : 'Sin caja' }}</span>
                     </div>
                     <x-dropdown class="w-1/3">
@@ -75,3 +75,26 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function searchItems() {
+        const searchInput = document.getElementById('search');
+        const items = document.getElementsByClassName('text-gray-800');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            Array.from(items).forEach(function(item) {
+                const itemName = item.textContent.toLowerCase();
+
+                if (itemName.includes(searchTerm)) {
+                    item.closest('.p-6').style.display = 'flex';
+                } else {
+                    item.closest('.p-6').style.display = 'none';
+                }
+            });
+        });
+    }
+
+    searchItems();
+</script>
