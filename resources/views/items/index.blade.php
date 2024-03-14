@@ -11,16 +11,16 @@
             <input type="text" name="search" id="search" placeholder="{{ __('Nombre del item a buscar...') }}"
                 class="block w-1/2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
             </input>
-            <x-primary-button class="mt-4">{{ __('Buscar') }}</x-primary-button>
+            <x-primary-button type="submit" class="mt-4">{{ __('Buscar') }}</x-primary-button>
         </form>
         {{-- Add item --}}
         <form action="{{ route('items.create') }}">
             <x-primary-button class="mt-4">{{ __('Añadir Item') }}</x-primary-button>
         </form>
 
-        <div class="w-full mt-6 bg-white p-3 shadow-sm rounded-lg divide-y">
+        <div class="w-full mt-6 bg-white p-3 shadow-sm rounded-lg divide-y" id="items-table">
             @foreach ($items as $item)
-                <div class="p-6 flex justify-between items-center space-x-4 w-full">
+                <div class="p-6 flex justify-between items-center space-x-4 w-full item-row">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 -scale-x-100" fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -77,24 +77,51 @@
 </x-app-layout>
 
 <script>
-    function searchItems() {
-        const searchInput = document.getElementById('search');
-        const items = document.getElementsByClassName('text-gray-800');
+    function dynamicSearch() {
+        const input = document.getElementById("search");
 
-        searchInput.addEventListener('input', function() {
-            const searchTerm = searchInput.value.toLowerCase();
+        input.addEventListener("keyup", function(e) {
+            e.preventDefault();
 
-            Array.from(items).forEach(function(item) {
-                const itemName = item.textContent.toLowerCase();
+            let filter = input.value.toUpperCase();
 
-                if (itemName.includes(searchTerm)) {
-                    item.closest('.p-6').style.display = 'flex';
-                } else {
-                    item.closest('.p-6').style.display = 'none';
+            const table = document.getElementById("items-table");
+            const tr = table.getElementsByTagName("div");
+
+            for (let i = 0; i < tr.length; i++) {
+                let td = tr[i].getElementsByTagName("div")[0];
+
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    txtValue = txtValue.toUpperCase();
+
+                    if (txtValue.indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    }
+
+    export function showItem() {
+        const itemRow = document.querySelectorAll(".item-row");
+
+        itemRow.forEach((row) => {
+            row.addEventListener("click", (e) => {
+                const isButtonClick =
+                    e.target.tagName === "A" || e.target.tagName === "BUTTON";
+
+                if (!isButtonClick) {
+                    e.preventDefault();
+                    const itemId = row.getAttribute("data-id");
+                    window.location.href = `/items/${itemId}`;
                 }
             });
         });
     }
 
-    searchItems();
+    dynamicSearch();
+    showItem();
 </script>

@@ -87,6 +87,15 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('items.index')" :active="request()->routeIs('items.index')">
+                {{ __('Items') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('boxes.index')" :active="request()->routeIs('boxes.index')">
+                {{ __('Cajas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.index')">
+                {{ __('Préstamos') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

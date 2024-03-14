@@ -37,4 +37,6 @@ Route::resource('boxes', BoxController::class);
 
 Route::resource('loans', LoanController::class);
 
+// Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
+
 require __DIR__ . '/auth.php';

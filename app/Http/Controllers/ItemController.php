@@ -113,4 +113,12 @@ class ItemController extends Controller
         }
         return redirect(route('items.index'));
     }
+
+    public function search(Request $request)
+{
+    $search = $request->get('search');
+    $items = Item::where('name', 'like', '%' . $search . '%')->get();
+
+    return view('items.index', ['items' => $items]);
+}
 }
